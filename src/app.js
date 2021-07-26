@@ -1,5 +1,4 @@
 const express = require("express");
-
 const routes = require("./routes/users.route");
 const debug = require("debug")("app:start");
 // const dbDebug = require("debug")("app:db");
@@ -21,9 +20,8 @@ app.use("/api/users", routes);
 
 //morgan
 
-if (app.get("env") == "development") {
+if (app.get("env") === "development") {
   app.use(morgan("tiny"));
-  // console.log("morgan available");
   debug("Moran is available");
 }
 
