@@ -1,21 +1,23 @@
 const express = require("express");
+
+const routes = require("./routes/users.route");
 const debug = require("debug")("app:start");
 // const dbDebug = require("debug")("app:db");
 const config = require("config");
+const cors = require("cors");
 // const { log } = require("./logger");
 const morgan = require("morgan");
-
-const users = require("./router/users");
 const app = express();
 
+app.use(cors()); // active cors
 app.use(express.json()); // body
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static("public"));
-app.use("/api/users", users);
+app.use(express.static("../public"));
+app.use("/api/users", routes);
 
 //Configuration of entorns
-console.log("Application: " + config.get("name"));
-console.log("DB server: " + config.get("configDB.host"));
+// console.log("Application: " + config.get("name"));
+// console.log("DB server: " + config.get("configDB.host"));
 
 //morgan
 
@@ -27,10 +29,6 @@ if (app.get("env") == "development") {
 
 // work with database
 debug("conection with dataBase");
-
-//Middleeware from others
-
-// app.use(log);
 
 app.get("/", (req, res) => {
   res.send("hello world");

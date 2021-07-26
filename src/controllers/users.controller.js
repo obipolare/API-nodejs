@@ -1,6 +1,6 @@
-const express = require("express");
-const router = express.Router();
 const Joi = require("joi");
+
+const controller = {};
 
 const userExists = (id) => {
   return users.find((user) => user.id === parseInt(id));
@@ -12,6 +12,7 @@ const validateLengthName = (keyName, value) => {
 
   return schema.validate({ [keyName]: value });
 };
+
 const users = [
   {
     id: 1,
@@ -31,20 +32,20 @@ const users = [
   },
 ];
 
-router.get("/", (req, res) => {
+controller.index = (req, res) => {
   res.send(users);
-});
+};
 
-router.get("/:id", (req, res) => {
+controller.getUser = (req, res) => {
   const user = userExists(req.params.id);
   if (!user) {
     res.status(404).send("user not found");
     return;
   }
   res.send(user);
-});
+};
 
-router.post("/", (req, res) => {
+controller.createPost = (req, res) => {
   const { value, error } = validateLengthName("name", req.body.name);
   if (!error) {
     const user = {
@@ -56,9 +57,9 @@ router.post("/", (req, res) => {
   } else {
     res.status(400).send(error.details[0].message);
   }
-});
+};
 
-router.put("/:id", (req, res) => {
+controller.updateUser = (req, res) => {
   //Find the user
   const user = userExists(req.params.id);
 
@@ -74,9 +75,9 @@ router.put("/:id", (req, res) => {
   user.name = value.name;
   res.send(user);
   console.log(value.name);
-});
+};
 
-router.delete("/:id", (req, res) => {
+controller.deleteUser = (req, res) => {
   const user = userExists(req.params.id);
 
   if (!user) {
@@ -87,6 +88,6 @@ router.delete("/:id", (req, res) => {
   console.log(index);
   users.splice(index, 1);
   res.send(user);
-});
+};
 
-module.exports = router;
+module.exports = controller;
