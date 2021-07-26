@@ -6,12 +6,13 @@ const config = require("config");
 const cors = require("cors");
 // const { log } = require("./logger");
 const morgan = require("morgan");
+const path = require("path");
 const app = express();
 
 app.use(cors()); // active cors
 app.use(express.json()); // body
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static("../public"));
+app.use(express.static(path.join(__dirname, "../public")));
 app.use("/api/users", routes);
 
 //Configuration of entorns
